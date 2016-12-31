@@ -10,6 +10,8 @@
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  *
  * $Id: PGNReader.java,v 1.3 2003/04/09 18:10:49 BerniMan Exp $
+
+ Modified by Loloof64 : removed getFileFilter() and main()
  */
 
 package chesspresso.pgn;
@@ -24,7 +26,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.zip.*;
-import javax.swing.filechooser.FileFilter;
 //1.4 import java.nio.*;
 
 
@@ -50,18 +51,6 @@ public final class PGNReader extends PGN
         } else {
             return false;
         }
-    }
-
-    public static FileFilter getFileFilter()
-    {
-        return new FileFilter() {
-            public boolean accept(File file) {
-                return file.isDirectory() || PGNReader.isPGNFileOrZipped(file.getName());
-            }
-            public String getDescription() {
-                return "PGN files (*.pgn, *.pgn.gz, *.zip)";
-            }
-        };
     }
 
     //======================================================================
@@ -751,79 +740,6 @@ public final class PGNReader extends PGN
     {
         System.out.println("PGNReader [-chars -tokens | -direct] {filename}");
         System.exit(0);
-    }
-
-    public static void main(String[] args)
-    {
-        int NO_MODE = -1;
-        int SHOW_CHARS = 0;
-        int SHOW_TOKENS = 1;
-        int PARSE_DIRECTLY = 2;
-        int mode = PARSE_DIRECTLY;
-        boolean verbose = false;
-
-        int index = 0;
-        while (index < args.length && args[index].startsWith("-")) {
-            if(args[index].equals("-chars")) {
-                mode = SHOW_CHARS;
-                index++;
-            } else if(args[index].equals("-tokens")) {
-                mode = SHOW_TOKENS;
-                index++;
-            } else if(args[index].equals("-direct")) {
-                mode = PARSE_DIRECTLY;
-                index++;
-            } else if(args[index].equals("-verbose")) {
-                verbose = true;
-                index++;
-            } else {
-                usage();
-            }
-        }
-
-        try {
-            if(index >= args.length) {
-                usage();
-            }
-            
-            for(; index < args.length; index++) {
-                int numOfGames = 0;
-                int numOfGamesWithResult = 0;
-                PGNReader reader = new PGNReader(args[index]);
-                reader.setErrorHandler(new PGNSimpleErrorHandler(System.out));
-                if (mode == SHOW_CHARS) {
-                    do {
-                        System.out.println((char)reader.getChar());
-                    } while(reader.m_lastChar != TOK_EOF);
-                } else if (mode == SHOW_TOKENS) {
-                    do {
-                        reader.getNextToken();
-                        System.out.println(reader.getLastTokenAsDebugString());
-                    } while(reader.getLastToken() != TOK_EOF);
-                } else if (mode == PARSE_DIRECTLY) {
-                    long time = System.currentTimeMillis();
-                    for(;;) {
-                        GameModel gameModel = reader.parseGame();
-                        if (gameModel == null) break;
-                        if (verbose) {
-                            System.out.println(gameModel);
-                        } else {
-                            System.out.print(".");
-                        }
-                        numOfGames++;
-                        int res = gameModel.getHeaderModel().getResult();
-                        if (res == Chess.RES_WHITE_WINS || res == Chess.RES_DRAW || res == Chess.RES_BLACK_WINS) {
-                            numOfGamesWithResult++;
-                        }
-                    }
-                    System.out.println(numOfGames + " games found, " + numOfGamesWithResult + " with result");
-                    time = System.currentTimeMillis() - time;
-                    System.out.println(time + "ms  " + (1000 * numOfGames / time) + " games / s ");
-                }
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
 }
