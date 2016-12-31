@@ -1,3 +1,5 @@
+This is a fork from  BernhardSeybold/Chesspresso, intended to make it lightweight for a use in Android.
+
 # What Is Chesspresso™?
 
 Chesspresso™ is Java library to help developers in writing any kind of chess program. It is open-source (LGPL) and contains state-of the art algorithms to implement chess concepts.
