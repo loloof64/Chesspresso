@@ -30,12 +30,6 @@ Browse the entire [Javadoc](http://www.chesspresso.org/javadoc/index.html) to ge
 *   Position: several abstractions of a chess position are available: [immutable](http://www.chesspresso.org/javadoc/chesspresso/position/ImmutablePosition.html), [mutable](http://www.chesspresso.org/javadoc/chesspresso/position/MutablePosition.html), and [moveable](javadoc/chesspresso/position/MoveablePosition.html) position (move, undo move, generateAllMoves) interfaces plus implementations, the [main](javadoc/chesspresso/position/Position.html) one is based on bitboards.
 *   [Game](http://www.chesspresso.org/javadoc/chesspresso/game/Game.html): abstraction of a chess game with support for lines, annotations, ability to traverse, walk through the game, etc.
 
-## Views
-
-*   [PositionView](http://www.chesspresso.org/javadoc/chesspresso/position/view/PositionView.html): an interactive panel to display a position, reacts on piece dragging and square clicking and fowrads events to listeners
-*   [GameBrowser](http://www.chesspresso.org/javadoc/chesspresso/game/view/GameBrowser.html): an interactive panel to display a game, contains both a textual (based on PGN) and a graphical view (based on the free Chess Cases font), support for browsing the game
-*   [HTMLGameBrowser](http://www.chesspresso.org/javadoc/chesspresso/game/view/HTMLGameBrowser.html): produces HTML displaying a game, allowing to browse through the game with a web browser. Uses JavaScript. [Here](http://www.chesspresso.org/chesshtml/luke.html) is an example.
-
 ## Standards
 
 *   PGN (portable game notation): the de-facto standard for ASCII-based game collections.
