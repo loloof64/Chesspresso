@@ -2,6 +2,8 @@
  * IChPositionReadMap.java
  *
  * Created on 28. Juni 2001, 10:47
+
+ Modified by Loloof64, removed getGameModelListModel()
  */
 
 package chesspresso.position.map;
@@ -27,7 +29,6 @@ public interface PositionReadMap
     public GameModelIterator getGameModelIterator();
     public GameModel getGameModel(int index);
     public int getGameModelIndex(GameModel gameModel);
-    public javax.swing.ListModel getGameModelListModel();
     public boolean containsGameModel(GameModel gameModel);
     public GameModel getGameModel(GameModel gameModel);
     

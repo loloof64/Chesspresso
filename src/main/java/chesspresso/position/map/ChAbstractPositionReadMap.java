@@ -2,6 +2,8 @@
  * ChAbstractPositionReadMap.java
  *
  * Created on 3. Juli 2001, 13:24
+
+ Modified by loloof64 : removed GameModelListModel, getGameModelListModel()
  */
 
 package chesspresso.position.map;
@@ -24,23 +26,6 @@ public abstract class ChAbstractPositionReadMap implements PositionReadMap
     public interface PositionDataListener
     {
         public void notifyPositionData(PositionData data, PositionData parentData, Position pos, double value);
-    }
-    
-    /*================================================================================*/
-    
-    private class GameModelListModel extends javax.swing.AbstractListModel
-    {
-        public int getSize() {return getNumOfGames();}        
-        public Object getElementAt(int index) {return getGameModel(index);}
-    }
-    
-    
-    protected GameModelListModel m_gameModelListModel;
-
-    public javax.swing.ListModel getGameModelListModel()
-    {
-        if (m_gameModelListModel == null) m_gameModelListModel = new GameModelListModel();
-        return m_gameModelListModel;
     }
     
     /*================================================================================*/

@@ -2,6 +2,8 @@
  * ChFilePositionMap.java
  *
  * Created on 28. Juni 2001, 10:44
+
+ Modified by loloof64 : removed getFileFilter() and isPositionFile(name)
  */
 
 package chesspresso.position.map;
@@ -388,18 +390,6 @@ int bitsForMoves       = 64;
         public void remove() {throw new UnsupportedOperationException("Remove not supported in GameModelIterator");}
     }
     
-    /*================================================================================*/
-    
-    public static javax.swing.filechooser.FileFilter getFileFilter()
-    {
-        return new javax.swing.filechooser.FileFilter() {
-            public boolean accept(File file) {return file.isDirectory() || isPositionFile(file.getName());}
-            public String getDescription() {return "Position map files (*.pm)";}
-        };
-    }
-    
-    public static boolean isPositionFile(String name) {return name != null && name.endsWith(".pm");}
-        
     /*================================================================================*/
     // Header
     
