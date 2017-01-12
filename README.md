@@ -1,4 +1,6 @@
 This is a fork from  BernhardSeybold/Chesspresso, intended to make it lightweight for a use in Android.
+I've done the following main modifications
+* Removed all view components.
 
 # What Is Chesspresso™?
 
