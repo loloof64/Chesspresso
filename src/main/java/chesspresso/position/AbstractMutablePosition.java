@@ -75,7 +75,7 @@ public abstract class AbstractMutablePosition extends AbstractPosition implement
         boolean notify = m_notifyPositionChanged;
         m_notifyPositionChanged = false;
         
-        FEN.initFromFEN(this, FEN.START_POSITION, true);
+        FEN.initFromFEN(this, FEN.START_POSITION, true, true);
         
         m_notifyPositionChanged = notify;
         firePositionChanged();

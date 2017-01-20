@@ -75,7 +75,7 @@ public class EPD
 
     public static Map initFromEPD(MutablePosition pos, String fen, boolean strict) throws IllegalArgumentException
     {
-        FEN.initFromFEN(pos, fen, strict);
+        FEN.initFromFEN(pos, fen, strict, true);
         Map opcodes = new HashMap();
         // TODO: parse opcodes here
         return opcodes;

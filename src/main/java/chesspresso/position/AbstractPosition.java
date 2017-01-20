@@ -111,7 +111,7 @@ public abstract class AbstractPosition implements ImmutablePosition
         // static of ChAbstractPosition
         if (s_startPositionHashCode == 0L) {
             AbstractMutablePosition startPos = new LightWeightPosition();
-            FEN.initFromFEN(startPos, FEN.START_POSITION, true);
+            FEN.initFromFEN(startPos, FEN.START_POSITION, true, true);
             s_startPositionHashCode = new Position (startPos).getHashCode();  // do after bitBoard init
         }
         return s_startPositionHashCode;

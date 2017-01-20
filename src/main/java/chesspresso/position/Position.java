@@ -405,7 +405,7 @@ public final class Position extends AbstractMoveablePosition
     public Position(String fen, boolean strict) throws IllegalArgumentException
     {
         this();
-        FEN.initFromFEN(this, fen, true);
+        FEN.initFromFEN(this, fen, true, true);
     }
     
     //======================================================================
