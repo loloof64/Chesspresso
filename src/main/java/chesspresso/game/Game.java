@@ -27,7 +27,7 @@ import chesspresso.move.IllegalMoveException;
  *
  * A chess game consists of the following parts:
  *  <ul>
-      <li> {@link GameHeaderModel} cantaining information about the game header, 
+ *    <li> {@link GameHeaderModel} cantaining information about the game header, 
  *         for instance white name, event, site
  *    <li> {@link GameMoveModel} containing the moves, lines, comments of the game.
  *    <li> a cursor and the current position in the game.

@@ -10,6 +10,8 @@
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
  *
  * $Id: FEN.java,v 1.1 2002/12/08 13:27:35 BerniMan Exp $
+
+ Modified by loloof64 : added a validatePosition parameter to initFromFEN function.
  */
 
 package chesspresso.position;
@@ -49,7 +51,7 @@ public class FEN
     
     //======================================================================
     
-    public static void initFromFEN(MutablePosition pos, String fen, boolean strict) throws IllegalArgumentException
+    public static void initFromFEN(MutablePosition pos, String fen, boolean strict, boolean validatePosition) throws IllegalArgumentException
     {
         pos.clear();
         
@@ -160,8 +162,10 @@ public class FEN
         try {
             pos.validate();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Malformatted fen string: " + e.getMessage());
+            if (validatePosition) {
+                e.printStackTrace();
+                throw new IllegalArgumentException("Malformatted fen string: " + e.getMessage());
+            }
         }
         
     }
