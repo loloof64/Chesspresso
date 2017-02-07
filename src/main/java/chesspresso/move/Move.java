@@ -503,7 +503,7 @@ public class Move
       short [] positionBeforeMoves = positionBefore.getAllMoves(); // get all possible moves
       short [] samePieceTypeMoves = filter(positionBeforeMoves, new MovePredicate() {
         public boolean isAcceptableMove(short scannedMove){
-          int scannedMoveMovingPiece = positionBeforeMoves.getPiece(Move.getFromSqi(scannedMove));
+          int scannedMoveMovingPiece = positionBefore.getPiece(Move.getFromSqi(scannedMove));
           return movingPiece == scannedMoveMovingPiece;
         }
       });
