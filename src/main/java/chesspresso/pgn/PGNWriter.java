@@ -168,7 +168,7 @@ public class PGNWriter extends PGN
                         print(Chess.plyToMoveNumber(plyNumber) + "...", true);
                     }
                 }
-                print(Move.getSAN(move, currentPosition), true);
+                print(Move.getSAN(move.getShortMoveDesc(), currentPosition), true);
 
                 if (nags != null) {
                     for (int i=0; i < nags.length; i++) {
