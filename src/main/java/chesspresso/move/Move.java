@@ -533,28 +533,31 @@ public class Move
       });
 
       int possibleMovesCount = sameToSquareIndexMoves.length;
-      if (possibleMovesCount > 2){
-        /*
-        When we have more than two pieces of same king aiming for the same square so that
-        all moves are legal, then we can't just try to find a common file/rank.
-        */
-        sb.append(Chess.sqiToStr(Move.getFromSqi(move))); //adding 'from' square in order to remove ambiguity
-      }
-      else if (possibleMovesCount == 2){
-        String move0FromSqiStr = Chess.sqiToStr(Move.getFromSqi(sameToSquareIndexMoves[0]));
-        String move1FromSqiStr = Chess.sqiToStr(Move.getFromSqi(sameToSquareIndexMoves[1]));
+      if (possibleMovesCount > 1){
+        final String moveFromSqiStr = Chess.sqiToStr(Move.getFromSqi(move));
+        int movesWithCommonFromFileCount = count(sameToSquareIndexMoves, new MovePredicate() {
+          public boolean isAcceptableMove(short scannedMove){
+            String scannedMoveFromSqiStr = Chess.sqiToStr(Move.getFromSqi(scannedMove));
+            return moveFromSqiStr.charAt(0) == scannedMoveFromSqiStr.charAt(0);
+          }
+        });
+        int movesWithCommonFromRankCount = count(sameToSquareIndexMoves, new MovePredicate() {
+          public boolean isAcceptableMove(short scannedMove){
+            String scannedMoveFromSqiStr = Chess.sqiToStr(Move.getFromSqi(scannedMove));
+            return moveFromSqiStr.charAt(1) == scannedMoveFromSqiStr.charAt(1);
+          }
+        });
 
-        boolean commonFile = move0FromSqiStr.charAt(0) == move1FromSqiStr.charAt(0);
-        boolean commonRank = move0FromSqiStr.charAt(1) == move1FromSqiStr.charAt(1);
-
-        if (commonFile){
-          sb.append(move0FromSqiStr.charAt(0)); // adding common file in order to remove ambiguity
-        }
-        else if (commonRank){
-          sb.append(move0FromSqiStr.charAt(1)); // adding common rank in order to remove ambiguity
+        if (movesWithCommonFromFileCount > 1 && movesWithCommonFromRankCount > 1){
+          sb.append(Chess.sqiToStr(Move.getFromSqi(move))); //adding 'from' square in order to remove ambiguity
         }
         else {
-          sb.append("<common_coord_error>");
+          if (movesWithCommonFromFileCount > 1) {
+            sb.append(moveFromSqiStr.charAt(1)); // adding common rank in order to remove ambiguity
+          }
+          else {
+            sb.append(moveFromSqiStr.charAt(0)); // adding common file in order to remove ambiguity
+          }
         }
       }
 
@@ -581,6 +584,11 @@ public class Move
       }
 
       return results;
+    }
+
+    private static int count(short[] inputArray, MovePredicate predicate){
+      short [] filteredArray = filter(inputArray, predicate);
+      return filteredArray.length;
     }
 
     private static Position clonePosition(Position originalPosition){
