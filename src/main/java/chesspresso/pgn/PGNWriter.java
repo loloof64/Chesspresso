@@ -18,6 +18,7 @@ package chesspresso.pgn;
 import chesspresso.*;
 import chesspresso.game.*;
 import chesspresso.move.Move;
+import chesspresso.move.IllegalMoveException;
 import chesspresso.position.*;
 
 import java.io.*;
