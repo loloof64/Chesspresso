@@ -468,7 +468,7 @@ public class Move
 
           if (movingPiece == Chess.PAWN){
             if (Move.isCapturing(move)) appendPawnCapturingSAN(move, sb, positionBefore);
-            else appendPawnSimplePushingSAN(move, sb, positionBefore);
+            else appendPawnSimplePushSAN(move, sb, positionBefore);
           }
           else appendStandardPieceMoveSAN(move, sb, positionBefore);
       }
@@ -489,12 +489,12 @@ public class Move
 
     ////////////// added by Laurent Bernabe //////////////////////////////
 
-    private static void appendPawnCapturingSAN(short move, StringBuffer sb, final Position positionBefore){
+    private static void appendPawnSimplePushSAN(short move, StringBuffer sb, final Position positionBefore){
       sb.append(Chess.sqiToStr(Move.getToSqi(move))); // adding 'to' square
       if (Move.isPromotion(move)) sb.append('=').append(Chess.pieceToChar(getPromo(move))); // adding promotion piece if needed
     }
 
-    private static void appendPawnSimplePushingSAN(short move, StringBuffer sb, final Position positionBefore){
+    private static void appendPawnCapturingSAN(short move, StringBuffer sb, final Position positionBefore){
       sb.append(Chess.sqiToStr(Move.getFromSqi(move)).charAt(0)); // adding 'from' file
       sb.append('x');
       sb.append(Chess.sqiToStr(Move.getToSqi(move))); // adding 'to' square
