@@ -16,6 +16,7 @@ package chesspresso.move;
 
 import chesspresso.*;
 import chesspresso.position.Position;
+import chesspresso.position.FEN;
 
 
 /**
@@ -461,10 +462,11 @@ public class Move
       } else if (Move.isLongCastle(move)) {
           sb.append(LONG_CASTLE_STRING);
       } else {
-          int piece = getMovingPiece();
-          if (piece == Chess.NO_PIECE) return "<invalid move : no piece is moving>";
+          final int moveFromSqi = Move.getFromSqi(move);
+          final int movingPiece = positionBefore.getPiece(moveFromSqi);
+          if (movingPiece == Chess.NO_PIECE) return "<invalid move : no piece is moving>";
 
-          if (piece == Chess.PAWN){
+          if (movingPiece == Chess.PAWN){
             if (Move.isCapturing(move)) appendPawnCapturingSAN(move, sb, positionBefore);
             else appendPawnSimplePushingSAN(move, sb, positionBefore);
           }
@@ -500,13 +502,13 @@ public class Move
       sb.append(Chess.pieceToChar(movingPiece)); // adding piece symbol
       short [] positionBeforeMoves = positionBefore.getAllMoves(); // get all possible moves
       short [] samePieceTypeMoves = filter(positionBeforeMoves, new MovePredicate() {
-        boolean isAcceptableMove(short scannedMove){
+        public boolean isAcceptableMove(short scannedMove){
           int scannedMoveMovingPiece = positionBeforeMoves.getPiece(Move.getFromSqi(scannedMove));
           return movingPiece == scannedMoveMovingPiece;
         }
       });
       short [] leavingKingSafeMoves = filter(samePieceTypeMoves, new MovePredicate() {
-        boolean isAcceptableMove(short scannedMove){
+        public boolean isAcceptableMove(short scannedMove){
           try {
             Position clonedPosition = clonePosition(positionBefore);
             clonedPosition.doMove(scannedMove);
@@ -518,7 +520,7 @@ public class Move
         }
       });
       short [] sameToSquareIndexMoves = filter(leavingKingSafeMoves, new MovePredicate() {
-        boolean isAcceptableMove(short scannedMove){
+        public boolean isAcceptableMove(short scannedMove){
           int scannedMoveToSqi = Move.getToSqi(scannedMove);
           return scannedMoveToSqi == moveToSqi;
         }
