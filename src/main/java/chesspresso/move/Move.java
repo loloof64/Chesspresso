@@ -474,7 +474,13 @@ public class Move
       }
 
       Position resultingPosition = clonePosition(positionBefore);
-      resultingPosition.doMove(move);
+      try {
+          resultingPosition.doMove(move);
+      }
+      catch (IllegalMoveException e){
+        return "<illegal move>";
+      }
+
 
       if      (resultingPosition.isMate())  sb.append('#');
       else if (resultingPosition.isCheck()) sb.append('+');
