@@ -15,6 +15,7 @@
 package chesspresso.move;
 
 import chesspresso.*;
+import chesspresso.position.Position;
 
 
 /**
@@ -493,17 +494,18 @@ public class Move
     }
 
     private static void appendStandardPieceMoveSAN(short move, StringBuffer sb, final Position positionBefore){
-      final int movingPiece = getMovingPiece();
+      final int moveFromSqi = Move.getFromSqi(move);
       final int moveToSqi = Move.getToSqi(move);
+      final int movingPiece = positionBefore.getPiece(moveFromSqi);
       sb.append(Chess.pieceToChar(movingPiece)); // adding piece symbol
       short [] positionBeforeMoves = positionBefore.getAllMoves(); // get all possible moves
-      short [] samePieceTypeMoves = filter(positionBeforeMoves, new MovePredicate(){
+      short [] samePieceTypeMoves = filter(positionBeforeMoves, new MovePredicate {
         boolean isAcceptableMove(short scannedMove){
           int scannedMoveMovingPiece = positionBeforeMoves.getPiece(Move.getFromSqi(scannedMove));
           return movingPiece == scannedMoveMovingPiece;
         }
       });
-      short [] leavingKingSafeMoves = filter(samePieceTypeMoves, new MovePredicate(){
+      short [] leavingKingSafeMoves = filter(samePieceTypeMoves, new MovePredicate {
         boolean isAcceptableMove(short scannedMove){
           try {
             Position clonedPosition = clonePosition(positionBefore);
@@ -515,7 +517,7 @@ public class Move
           }
         }
       });
-      short [] sameToSquareIndexMoves = filter(leavingKingSafeMoves, new MovePredicate(){
+      short [] sameToSquareIndexMoves = filter(leavingKingSafeMoves, new MovePredicate {
         boolean isAcceptableMove(short scannedMove){
           int scannedMoveToSqi = Move.getToSqi(scannedMove);
           return scannedMoveToSqi == moveToSqi;
