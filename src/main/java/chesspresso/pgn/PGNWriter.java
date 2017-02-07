@@ -178,7 +178,11 @@ public class PGNWriter extends PGN
                 if (comment != null) print(TOK_COMMENT_BEGIN + comment + TOK_COMMENT_END, true);
                 needsMoveNumber = !move.isWhiteMove() || (comment != null);
 
-                currentPosition.doMove(move.getShortMoveDesc());
+                try {
+                  currentPosition.doMove(move.getShortMoveDesc());
+                } catch (IllegalMoveException e){
+                  // should not happen
+                }
             }
             public void notifyLineStart(int level)
             {
