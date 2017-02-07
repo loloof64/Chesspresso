@@ -550,7 +550,7 @@ public class Move
 
       if (Move.isCapturing(move)) sb.append('x'); // adding capture sign
 
-      sb.append(Chess.sqiToStr(Move.getToSqi(move))) // adding target cell
+      sb.append(Chess.sqiToStr(Move.getToSqi(move))); // adding target cell
     }
 
     private static interface MovePredicate {
@@ -565,7 +565,7 @@ public class Move
         if (predicate.isAcceptableMove(currentMove)) dynamicResultsList.add(currentMove);
       }
 
-      short [] results = new short[dynamicResultsList.size()];
+      short [] results = new short[dynamicResultsList.size()];
       for (int index = 0; index < dynamicResultsList.size(); index++){
         results[index] = dynamicResultsList.get(index);
       }
