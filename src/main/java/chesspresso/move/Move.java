@@ -16,7 +16,6 @@ package chesspresso.move;
 
 import chesspresso.*;
 import chesspresso.position.Position;
-import chesspresso.position.FEN;
 
 
 /**
@@ -473,7 +472,7 @@ public class Move
           else appendStandardPieceMoveSAN(move, sb, positionBefore);
       }
 
-      Position resultingPosition = clonePosition(positionBefore);
+      Position resultingPosition = positionBefore.getClone();
       try {
           resultingPosition.doMove(move);
       }
@@ -516,7 +515,7 @@ public class Move
       short [] leavingKingSafeMoves = filter(samePieceTypeMoves, new MovePredicate() {
         public boolean isAcceptableMove(short scannedMove){
           try {
-            Position clonedPosition = clonePosition(positionBefore);
+            Position clonedPosition = positionBefore.getClone();
             clonedPosition.doMove(scannedMove);
             return true;
           }
@@ -589,10 +588,6 @@ public class Move
     private static int count(short[] inputArray, MovePredicate predicate){
       short [] filteredArray = filter(inputArray, predicate);
       return filteredArray.length;
-    }
-
-    private static Position clonePosition(Position originalPosition){
-      return new Position(FEN.getFEN(originalPosition));
     }
 
     private static int getPromo(short move){

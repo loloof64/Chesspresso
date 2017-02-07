@@ -36,9 +36,9 @@ public class PGNWriter extends PGN
     private int m_charactersPerLine;
     private int m_curCol;
     private String[] m_additionalHeaderTags;
-    
+
     //======================================================================
-    
+
     public PGNWriter(Writer out)
     {
         this(new PrintWriter(out));
@@ -54,7 +54,7 @@ public class PGNWriter extends PGN
     }
 
     //======================================================================
-    
+
     /**
      * Set the maximal characters per line. The writer will insert a line break
      * if the next token to be printed would exceed the line width.
@@ -75,7 +75,7 @@ public class PGNWriter extends PGN
             m_out.println();
         }
     }
-    
+
     /**
      * Writes the game model.
      *
@@ -90,7 +90,7 @@ public class PGNWriter extends PGN
         writeMoves(game);
         if (m_curCol > 0) m_out.println();
     }
-    
+
     /**
      * Determines which additional headers (except the seven tag roaster and the
      * FEN tag) should be included in the header. The sequence is according the
@@ -105,14 +105,14 @@ public class PGNWriter extends PGN
     {
         m_additionalHeaderTags = tags;
     }
-    
+
     //======================================================================
-    
+
     private void writeTag(String tag, String value)
     {
         m_out.println(TOK_TAG_BEGIN + tag + " " + TOK_QUOTE + value + TOK_QUOTE + TOK_TAG_END);
     }
-    
+
     private void writeHeader(Game game)
     {
         if (m_additionalHeaderTags == null) {
@@ -136,24 +136,29 @@ public class PGNWriter extends PGN
                 }
             }
         }
-        
+
         if (!game.getPosition().isStartPosition()) {
             writeTag(TAG_SETUP, "1");
             writeTag(TAG_FEN, FEN.getFEN(game.getPosition()));
         }
     }
 
-    private void writeMoves(Game game)
+    /**
+    Modified a bit by Laurent Bernabe
+    */
+    private void writeMoves(final Game game)
     {
         // print leading comments before move 1
         String comment = game.getComment();
         if (comment != null) {
             print(TOK_COMMENT_BEGIN + comment + TOK_COMMENT_END, true);
         }
-        
+
         // traverse the game
         game.traverse(new GameListener() {
             private boolean needsMoveNumber = true;
+            private Position currentPosition = game.getPosition();
+            private java.util.Stack<Position> stackedPositions = new java.util.Stack<Position>();
             public void notifyMove(Move move, short[] nags, String comment, int plyNumber, int level)
             {
                 if (needsMoveNumber) {
@@ -163,8 +168,8 @@ public class PGNWriter extends PGN
                         print(Chess.plyToMoveNumber(plyNumber) + "...", true);
                     }
                 }
-                print(move.toString(), true);
-                
+                print(Move.getSAN(move, currentPosition), true);
+
                 if (nags != null) {
                     for (int i=0; i < nags.length; i++) {
                         print(String.valueOf(TOK_NAG_BEGIN) + String.valueOf(nags[i]), true);
@@ -172,19 +177,23 @@ public class PGNWriter extends PGN
                 }
                 if (comment != null) print(TOK_COMMENT_BEGIN + comment + TOK_COMMENT_END, true);
                 needsMoveNumber = !move.isWhiteMove() || (comment != null);
+
+                currentPosition.doMove(move);
             }
             public void notifyLineStart(int level)
             {
                 print(String.valueOf(TOK_LINE_BEGIN), false);
                 needsMoveNumber = true;
+                stackedPositions.push(currentPosition.getClone());
             }
             public void notifyLineEnd(int level)
             {
                 print(String.valueOf(TOK_LINE_END), true);
                 needsMoveNumber = true;
+                currentPosition = stackedPositions.pop();
             }
         }, true);
-        
+
         print(game.getResultStr(), false);
     }
 
